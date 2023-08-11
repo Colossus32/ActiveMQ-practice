@@ -7,7 +7,8 @@ public class Consumer {
     public static void main(String[] args) {
         ConnectionFactory factory = new ActiveMQConnectionFactory("admin","admin", "tcp://localhost:61616");
 
-        try(Connection connection = factory.createConnection()) {
+        try {
+            Connection connection = factory.createConnection();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             Destination destination = session.createQueue("demo");
@@ -17,7 +18,7 @@ public class Consumer {
                 TextMessage textMessage = (TextMessage) message;
                 try {
                     System.out.println("Consumer got a message: " + textMessage.getText());
-
+                    textMessage.acknowledge();
                 } catch (JMSException e) {
                     throw new RuntimeException(e);
                 }

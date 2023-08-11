@@ -16,10 +16,13 @@ public class Publisher {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Destination destination = session.createQueue("demo");
 
-            TextMessage textMessage = session.createTextMessage("First message!");
+            //TextMessage textMessage = session.createTextMessage("First message!");
             MessageProducer producer = session.createProducer(destination);
 
-            producer.send(textMessage);
+            for (int i = 0; i < 50; i++) {
+                String dummy = String.format("Message from producer - #%d",i);
+                producer.send(session.createTextMessage(dummy));
+            }
 
             System.out.println("Message published");
             session.close();
